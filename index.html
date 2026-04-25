@@ -1202,6 +1202,269 @@
     [data-anim] { opacity: 1 !important; translate: 0 0 !important; }
   }
 
+  /* ──────────────────────────────────────────
+     RSVP — STEPPED FLOW + LOL TAKEOVER
+     ────────────────────────────────────────── */
+
+  /* Step progress indicator (three little stars at the top) */
+  .step-dots {
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    font-family: 'SeasonMix', serif;
+    font-style: italic;
+  }
+  .step-dots .dot {
+    font-size: 14px;
+    color: var(--maroon);
+    opacity: 0.25;
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(.34,1.56,.64,1), color 0.4s ease;
+  }
+  .step-dots .dot.is-active {
+    opacity: 1;
+    color: var(--coral);
+    transform: scale(1.35);
+  }
+  .step-dots .dot.is-done {
+    opacity: 0.7;
+    color: var(--mustard);
+  }
+
+  /* Steps — each is a sibling, swap with transitions */
+  .step { display: none; }
+  .step.is-active {
+    display: block;
+    animation: stepEnter 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  .step.is-leaving {
+    display: block;
+    animation: stepLeave 0.32s cubic-bezier(.4,0,.5,1) both;
+  }
+  @keyframes stepEnter {
+    from { opacity: 0; transform: translateX(28px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes stepLeave {
+    from { opacity: 1; transform: translateX(0); }
+    to   { opacity: 0; transform: translateX(-28px); }
+  }
+
+  /* Name pill — appears at top of step 2, doubles as back button */
+  .name-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px 7px;
+    background: linear-gradient(180deg, #fffbe9 0%, var(--cream-2) 100%);
+    border: 1.5px solid rgba(107,31,46,0.35);
+    color: var(--maroon);
+    font-family: 'SeasonMix', serif;
+    font-style: italic;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 12px;
+    border-radius: 999px;
+    box-shadow: 0 2px 4px rgba(75,30,20,0.10);
+    transition: transform 0.25s cubic-bezier(.22,1,.36,1), filter 0.2s ease;
+    animation: pillIn 0.5s cubic-bezier(.34,1.56,.64,1) 0.05s both;
+  }
+  .name-pill:hover { transform: translateY(-1px); filter: brightness(1.04); }
+  .name-pill .check {
+    color: var(--coral);
+    font-style: normal;
+    font-size: 13px;
+  }
+  .name-pill .back {
+    color: var(--terracotta);
+    opacity: 0.7;
+    margin-left: 2px;
+    font-size: 11px;
+  }
+  @keyframes pillIn {
+    from { opacity: 0; transform: translateY(-6px) scale(0.85); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+
+  /* Drink tiles — replace the boring select */
+  .drink-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin: 6px 0 10px;
+  }
+  .drink-tile {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 6px;
+    padding: 14px 8px 12px;
+    background: rgba(255,255,255,0.55);
+    border: 1.5px solid rgba(107,31,46,0.35);
+    color: var(--maroon);
+    cursor: pointer;
+    font-family: 'SeasonMix', serif;
+    font-style: italic;
+    font-size: 13px;
+    line-height: 1.15;
+    text-align: center;
+    border-radius: 0;
+    transition:
+      transform 0.28s cubic-bezier(.34,1.56,.64,1),
+      background 0.2s ease,
+      border-color 0.2s ease,
+      box-shadow 0.25s ease,
+      opacity 0.3s ease;
+    opacity: 0;
+    transform: translateX(22px);
+    animation: tileIn 0.5s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes tileIn {
+    from { opacity: 0; transform: translateX(22px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  .drink-tile:hover {
+    transform: translateY(-2px);
+    border-color: var(--coral);
+    background: rgba(244, 117, 88, 0.07);
+    box-shadow: 0 4px 10px rgba(75,30,20,0.10);
+  }
+  .drink-tile svg { width: 32px; height: 36px; display: block; }
+  .drink-tile.is-chosen {
+    background: linear-gradient(180deg, #f78b6f 0%, var(--coral) 60%, var(--coral-deep) 100%);
+    color: var(--cream);
+    border-color: var(--coral-deep);
+    transform: scale(1.06);
+    box-shadow: 0 6px 18px rgba(199, 89, 66, 0.4);
+  }
+  .drink-tile.is-fading {
+    opacity: 0;
+    transform: scale(0.85);
+    pointer-events: none;
+  }
+
+  /* LOL TAKEOVER */
+  .lol-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    z-index: 2000;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 40%, rgba(244,117,88,0.18), transparent 70%),
+      linear-gradient(180deg, #fff1d5 0%, #fadcae 60%, #f4c693 100%);
+    justify-content: center; align-items: center; padding: 20px;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    overflow: hidden;
+  }
+  .lol-overlay.is-active { display: flex; opacity: 1; }
+  .lol-overlay::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(75, 30, 20, 0.08) 0.55px, transparent 1.1px);
+    background-size: 5px 5px;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: 0.6;
+  }
+  .lol-card {
+    position: relative;
+    z-index: 5;
+    background: linear-gradient(180deg, #fffbe9 0%, var(--cream) 100%);
+    padding: 32px 30px 28px;
+    width: 360px; max-width: 100%;
+    text-align: center;
+    clip-path: polygon(
+      1% 2%, 8% 0%, 20% 2%, 34% 0%, 48% 2%, 62% 0%, 76% 2%, 88% 0%, 98% 3%,
+      100% 20%, 97% 40%, 100% 60%, 97% 80%, 100% 98%,
+      88% 100%, 76% 98%, 62% 100%, 48% 98%, 34% 100%, 20% 98%, 8% 100%, 0% 96%,
+      3% 80%, 0% 60%, 3% 40%, 0% 20%
+    );
+    filter: drop-shadow(5px 7px 0 var(--mustard)) drop-shadow(10px 14px 0 var(--maroon));
+    animation: modalIn 0.5s cubic-bezier(.34,1.56,.64,1);
+  }
+  .lol-card::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(199, 89, 66, 0.10) 0.55px, transparent 1.1px);
+    background-size: 4px 4px;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  .lol-card h2 {
+    font-family: 'SeasonMix', serif;
+    font-style: italic; font-weight: 400;
+    font-size: 48px; line-height: 0.95;
+    color: var(--coral);
+    margin-bottom: 10px;
+    letter-spacing: -1px;
+  }
+  .lol-card .lol-sub {
+    font-family: 'SeasonMix', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--maroon);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .lol-card .lol-tertiary {
+    font-family: 'SeasonSans', sans-serif;
+    font-size: 12px;
+    color: var(--terracotta);
+    line-height: 1.55;
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+
+  /* Falling rain pieces (emojis + sticker bubbles) */
+  .rain-piece {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    animation: confettiFall cubic-bezier(.4, 0, .6, 1) forwards;
+    will-change: transform, opacity;
+  }
+  .rain-emoji {
+    font-size: 40px;
+    line-height: 1;
+    text-shadow: 0 2px 4px rgba(75,30,20,0.18);
+  }
+  .rain-sticker {
+    font-family: 'SeasonMix', serif;
+    font-style: italic;
+    font-size: 18px;
+    padding: 5px 12px 6px;
+    color: var(--cream);
+    background: var(--coral);
+    border-radius: 999px;
+    box-shadow: 0 3px 6px rgba(75,30,20,0.22);
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .rain-sticker.is-mustard { background: var(--mustard); color: var(--maroon-2); }
+  .rain-sticker.is-teal    { background: var(--teal);    color: var(--cream); }
+  .rain-sticker.is-maroon  { background: var(--maroon);  color: var(--cream); }
+  .rain-sticker.is-pink    { background: var(--pink);    color: var(--maroon-2); }
+
+  /* RSVP button "ping" on modal close */
+  .rsvp-btn.is-pinging { animation: btnPing 0.6s cubic-bezier(.34,1.56,.64,1); }
+  @keyframes btnPing {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.08) rotate(-1deg); }
+    100% { transform: scale(1) rotate(0); }
+  }
+
+  /* Reduced motion: dampen the rain + step springs */
+  @media (prefers-reduced-motion: reduce) {
+    .step.is-active, .step.is-leaving { animation: none; }
+    .drink-tile { animation: none; opacity: 1; transform: none; }
+    .name-pill { animation: none; }
+    .rain-piece { animation-duration: 1.6s !important; }
+  }
+
+  /* Mobile: keep LOL card readable, tighten tiles */
+  @media (max-width: 420px) {
+    .lol-card { padding: 26px 22px 22px; }
+    .lol-card h2 { font-size: 40px; }
+    .drink-tile { font-size: 12.5px; padding: 12px 6px 10px; }
+    .rain-emoji { font-size: 34px; }
+    .rain-sticker { font-size: 16px; padding: 4px 10px 5px; }
+  }
+
   /* Responsive: smaller screens */
   @media (max-width: 480px) {
     .name-h1 { font-size: 84px; }
@@ -1274,13 +1537,31 @@
           <!-- top-right: joint with smoke -->
           <div class="illus i-joint" style="top: 20px; right: 8px; transform: rotate(18deg);" data-anim>
             <svg width="86" height="72" viewBox="0 0 86 72">
-              <path d="M10,60 Q6,48 14,42 Q22,36 16,28 Q10,20 18,12 Q26,6 22,-2" fill="none" stroke="#fff6e3" stroke-width="2.5" stroke-linecap="round" opacity="0.8"/>
-              <path d="M20,62 Q26,52 20,46 Q14,40 22,32 Q30,24 24,18" fill="none" stroke="#fff6e3" stroke-width="2" stroke-linecap="round" opacity="0.6"/>
-              <rect x="22" y="58" width="58" height="8" rx="1" fill="#fff6e3" stroke="#2a1810" stroke-width="1.3"/>
-              <rect x="68" y="58" width="12" height="8" fill="#e0a83a" stroke="#2a1810" stroke-width="1.3"/>
-              <rect x="20" y="58" width="4" height="8" fill="#f47558"/>
-              <circle cx="18" cy="62" r="3" fill="#d35400"/>
-              <circle cx="17" cy="61" r="1.3" fill="#fde08c"/>
+              <!-- smoke wisps -->
+              <path d="M10,60 Q6,48 14,42 Q22,36 16,28 Q10,20 18,12 Q26,6 22,-2" fill="none" stroke="#fff6e3" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
+              <path d="M20,62 Q26,52 20,46 Q14,40 22,32 Q30,24 24,18" fill="none" stroke="#fff6e3" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+              <path d="M30,60 Q34,54 32,48" fill="none" stroke="#fff6e3" stroke-width="1.6" stroke-linecap="round" opacity="0.55"/>
+
+              <!-- joint body: tapered cone, fatter at lit end, narrower toward the mouth -->
+              <path d="M22,55 L78,61 L78,65 L22,69 Z" fill="#fff6e3" stroke="#2a1810" stroke-width="1.3" stroke-linejoin="round"/>
+
+              <!-- paper seam (hand-rolled hint) -->
+              <path d="M26,62 Q42,61.5 58,62 T76,63" stroke="#c8533a" stroke-width="0.5" fill="none" opacity="0.45"/>
+
+              <!-- crutch / mouthpiece -->
+              <rect x="72" y="61" width="6" height="4" fill="#fed992" stroke="#2a1810" stroke-width="0.8"/>
+
+              <!-- burnt twisted tip -->
+              <path d="M22,55 L17,60 L19,64 L22,69 Z" fill="#3a1a10" stroke="#2a1810" stroke-width="1" stroke-linejoin="round"/>
+
+              <!-- cherry ember + glow -->
+              <circle cx="15" cy="62" r="3.8" fill="#c8533a" stroke="#2a1810" stroke-width="0.8"/>
+              <circle cx="15" cy="62" r="2.4" fill="#f47558"/>
+              <circle cx="14.5" cy="61.5" r="1.2" fill="#fde08c"/>
+
+              <!-- tiny floating embers -->
+              <circle cx="10" cy="58" r="0.8" fill="#e0a83a" opacity="0.8"/>
+              <circle cx="8"  cy="55" r="0.6" fill="#f1c252" opacity="0.65"/>
             </svg>
           </div>
 
@@ -1503,24 +1784,101 @@
 <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeRSVP()">
   <div class="modal">
     <button class="modal-close" onclick="closeRSVP()">×</button>
+
+    <div class="step-dots" id="stepDots" aria-hidden="true">
+      <span class="dot" data-dot="1">✷</span>
+      <span class="dot" data-dot="2">✸</span>
+      <span class="dot" data-dot="3">✦</span>
+    </div>
+
     <div id="formContent">
-      <h2>Okay, fabulous.</h2>
-      <p class="sub">Cosmo incoming. Tell Mehak who's on the list.</p>
-      <input type="text" id="guestName" placeholder="Your name, darling" />
-      <select id="guestDrink">
-        <option value="">Your poison?</option>
-        <option>Espresso martini</option>
-        <option>Cosmopolitan</option>
-        <option>Tequila soda, lime</option>
-        <option>Something bubbly</option>
-        <option>Whatever's pink</option>
-      </select>
-      <button class="modal-submit" onclick="submitRSVP()">send it ✷</button>
+      <!-- Step 1: name -->
+      <div class="step" id="stepName">
+        <h2>name on the door?</h2>
+        <p class="sub">first things first — who's gracing us?</p>
+        <input type="text" id="guestName" placeholder="first name, you legend" autocomplete="off" />
+        <button class="modal-submit" onclick="submitName()">lock me in →</button>
+      </div>
+
+      <!-- Step 2: drink -->
+      <div class="step" id="stepDrink">
+        <button type="button" class="name-pill" id="namePill" onclick="goToStep(1)">
+          <span class="check">✓</span>
+          <span class="pill-name" id="pillName"></span>
+          <span class="back">· change</span>
+        </button>
+        <h2 id="drinkHeadline">pick your poison.</h2>
+        <p class="sub">cocktail of choice, on the house.</p>
+        <div class="drink-grid" id="drinkGrid">
+          <button type="button" class="drink-tile" data-drink="Espresso martini" style="animation-delay: 60ms">
+            <svg viewBox="0 0 36 40">
+              <path d="M5 8 L31 8 L20 22 L16 22 Z" fill="#fff6e3" stroke="#2a1810" stroke-width="1.4" stroke-linejoin="round"/>
+              <ellipse cx="18" cy="11.5" rx="11" ry="1.2" fill="#6a1f30"/>
+              <circle cx="14" cy="11" r="1.4" fill="#3a1a10"/>
+              <circle cx="18" cy="11.6" r="1.3" fill="#3a1a10"/>
+              <circle cx="22" cy="11" r="1.4" fill="#3a1a10"/>
+              <rect x="17.2" y="22" width="1.6" height="11" fill="#2a1810"/>
+              <ellipse cx="18" cy="34" rx="8" ry="1.6" fill="#2a1810"/>
+            </svg>
+            espresso martini
+          </button>
+          <button type="button" class="drink-tile" data-drink="Cosmopolitan" style="animation-delay: 120ms">
+            <svg viewBox="0 0 36 40">
+              <path d="M5 8 L31 8 L18 24 Z" fill="#f59ea1" stroke="#2a1810" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M22 4 Q26 6 24 10" fill="none" stroke="#e0a83a" stroke-width="1.6" stroke-linecap="round"/>
+              <rect x="17.2" y="24" width="1.6" height="9" fill="#2a1810"/>
+              <ellipse cx="18" cy="34" rx="8" ry="1.6" fill="#2a1810"/>
+            </svg>
+            cosmopolitan
+          </button>
+          <button type="button" class="drink-tile" data-drink="Tequila soda, lime" style="animation-delay: 180ms">
+            <svg viewBox="0 0 36 40">
+              <rect x="9" y="8" width="18" height="22" rx="1.6" fill="#fff6e3" stroke="#2a1810" stroke-width="1.4"/>
+              <rect x="10" y="14" width="16" height="15" fill="#cfe6c6" opacity="0.6"/>
+              <circle cx="22" cy="13" r="3" fill="#94b685" stroke="#2a1810" stroke-width="1"/>
+              <path d="M19 13 L25 13 M22 10 L22 16" stroke="#2a1810" stroke-width="0.8"/>
+              <ellipse cx="18" cy="32" rx="9" ry="1.6" fill="#2a1810"/>
+            </svg>
+            tequila soda
+          </button>
+          <button type="button" class="drink-tile" data-drink="Something bubbly" style="animation-delay: 240ms">
+            <svg viewBox="0 0 36 40">
+              <path d="M13 6 L23 6 L22 24 Q22 28 18 28 Q14 28 14 24 Z" fill="#fde08c" stroke="#2a1810" stroke-width="1.4"/>
+              <circle cx="17" cy="14" r="1" fill="#fff8d8"/>
+              <circle cx="20" cy="18" r="0.9" fill="#fff8d8"/>
+              <circle cx="18" cy="22" r="0.8" fill="#fff8d8"/>
+              <rect x="17.2" y="28" width="1.6" height="6" fill="#2a1810"/>
+              <ellipse cx="18" cy="35" rx="6" ry="1.5" fill="#2a1810"/>
+            </svg>
+            something bubbly
+          </button>
+          <button type="button" class="drink-tile" data-drink="Whatever's pink" style="animation-delay: 300ms">
+            <svg viewBox="0 0 36 40">
+              <path d="M6 8 Q6 14 12 18 Q18 22 18 30 Q18 22 24 18 Q30 14 30 8 Z" fill="#f59ea1" stroke="#2a1810" stroke-width="1.4" stroke-linejoin="round"/>
+              <path d="M14 13 Q18 16 22 13" fill="none" stroke="#fff6e3" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
+              <ellipse cx="18" cy="34" rx="9" ry="1.6" fill="#2a1810"/>
+            </svg>
+            whatever's pink
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: thanks -->
+      <div class="step thanks-msg" id="thanksMsg">
+        <div class="big">see you<br>Saturday!</div>
+        <p>ice in the bucket, your name on the list. ✷</p>
+      </div>
     </div>
-    <div class="thanks-msg" id="thanksMsg">
-      <div class="big">see you<br>Saturday!</div>
-      <p>You're officially on the list.<br>Cocktails at golden hour. ✷</p>
-    </div>
+  </div>
+</div>
+
+<!-- LOL takeover -->
+<div class="lol-overlay" id="lolOverlay" onclick="if(event.target===this)dismissLolTakeover()">
+  <div class="lol-card">
+    <h2 id="lolHeadline">oh hell no 😭</h2>
+    <p class="lol-sub" id="lolSub">that is, factually, not your name.</p>
+    <p class="lol-tertiary" id="lolTertiary">the list is… curated. try again, or close the tab in shame.</p>
+    <button class="modal-submit" id="lolApology" onclick="dismissLolTakeover()">my bad, i'll behave →</button>
   </div>
 </div>
 
@@ -1625,27 +1983,221 @@
 </script>
 
 <script>
-  function openRSVP() { document.getElementById('modalOverlay').classList.add('active'); spawnConfetti(40); }
-  function closeRSVP() {
-    document.getElementById('modalOverlay').classList.remove('active');
+  // Guestlist — only these first names get past the gate.
+  // Case-insensitive, matched against the FIRST whitespace-separated token.
+  const GUEST_LIST = [
+    'mehak',
+    'lakshya',
+  ];
+
+  const matchesGuest = (raw) => {
+    const first = (raw || '').trim().toLowerCase().split(/\s+/)[0];
+    return !!first && GUEST_LIST.includes(first);
+  };
+
+  // Acceptable display name (capitalize first token).
+  const formatName = (raw) => {
+    const first = (raw || '').trim().split(/\s+/)[0] || '';
+    return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+  };
+
+  let lolAttempts = 0;
+  let chosenName  = '';
+  let chosenDrink = '';
+
+  function openRSVP() {
+    document.getElementById('modalOverlay').classList.add('active');
+    goToStep(1, { instant: true });
+    spawnConfetti(40);
     setTimeout(() => {
-      document.getElementById('thanksMsg').classList.remove('active');
-      document.getElementById('formContent').style.display = '';
-    }, 300);
-  }
-  function submitRSVP() {
-    const name = document.getElementById('guestName').value.trim();
-    if (!name) {
       const inp = document.getElementById('guestName');
+      if (inp) inp.focus();
+    }, 350);
+  }
+
+  function closeRSVP() {
+    const overlay = document.getElementById('modalOverlay');
+    overlay.classList.remove('active');
+    // Tiny "ping" on the rsvp button so the round-trip feels anchored.
+    const btn = document.getElementById('rsvpBtn');
+    if (btn) {
+      btn.classList.remove('is-pinging');
+      // Force reflow so the animation can replay on repeat opens.
+      void btn.offsetWidth;
+      btn.classList.add('is-pinging');
+    }
+    setTimeout(() => {
+      // Reset state so reopen lands on step 1 fresh.
+      chosenName = '';
+      chosenDrink = '';
+      const inp = document.getElementById('guestName');
+      if (inp) inp.value = '';
+      document.querySelectorAll('.drink-tile').forEach((t) => {
+        t.classList.remove('is-chosen', 'is-fading');
+      });
+      goToStep(1, { instant: true });
+    }, 350);
+  }
+
+  function setStepDots(stepNum) {
+    document.querySelectorAll('.step-dots .dot').forEach((d) => {
+      const n = parseInt(d.dataset.dot, 10);
+      d.classList.toggle('is-active', n === stepNum);
+      d.classList.toggle('is-done',   n <  stepNum);
+    });
+  }
+
+  function goToStep(n, opts = {}) {
+    const ids = { 1: 'stepName', 2: 'stepDrink', 3: 'thanksMsg' };
+    const targetId = ids[n];
+    if (!targetId) return;
+
+    const target = document.getElementById(targetId);
+    const current = document.querySelector('.step.is-active');
+
+    if (current && current !== target && !opts.instant) {
+      current.classList.add('is-leaving');
+      current.classList.remove('is-active');
+      setTimeout(() => current.classList.remove('is-leaving'), 320);
+    } else if (current && current !== target) {
+      current.classList.remove('is-active', 'is-leaving');
+    }
+
+    target.classList.remove('is-leaving');
+    target.classList.add('is-active');
+    setStepDots(n);
+
+    if (n === 1) {
+      const inp = document.getElementById('guestName');
+      if (inp && !opts.instant) setTimeout(() => inp.focus(), 60);
+    }
+  }
+
+  function submitName() {
+    const inp = document.getElementById('guestName');
+    const raw = inp.value;
+    if (!raw.trim()) {
       inp.focus();
       inp.style.borderColor = '#f47558';
       inp.style.background = 'rgba(244, 117, 88, 0.1)';
       return;
     }
-    document.getElementById('formContent').style.display = 'none';
-    document.getElementById('thanksMsg').classList.add('active');
-    spawnConfetti(80);
+    if (!matchesGuest(raw)) {
+      showLolTakeover();
+      return;
+    }
+    inp.style.borderColor = '';
+    inp.style.background = '';
+    chosenName = formatName(raw);
+    document.getElementById('pillName').textContent = chosenName;
+    document.getElementById('drinkHeadline').textContent = `hi ${chosenName.toLowerCase()}. pick your poison.`;
+    // Reset drink tile state in case of back-and-forth.
+    document.querySelectorAll('.drink-tile').forEach((t, i) => {
+      t.classList.remove('is-chosen', 'is-fading');
+      // Replay cascade by toggling animation.
+      t.style.animation = 'none';
+      void t.offsetWidth;
+      t.style.animation = '';
+    });
+    goToStep(2);
   }
+
+  function chooseDrink(tile) {
+    if (tile.classList.contains('is-chosen')) return;
+    chosenDrink = tile.dataset.drink || '';
+    document.querySelectorAll('.drink-tile').forEach((t) => {
+      if (t === tile) t.classList.add('is-chosen');
+      else t.classList.add('is-fading');
+    });
+    setTimeout(() => {
+      goToStep(3);
+      spawnConfetti(80);
+    }, 480);
+  }
+
+  // Wire up drink tile clicks.
+  document.querySelectorAll('.drink-tile').forEach((t) => {
+    t.addEventListener('click', () => chooseDrink(t));
+  });
+
+  // Submit on Enter inside the name input.
+  const nameInput = document.getElementById('guestName');
+  if (nameInput) {
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); submitName(); }
+    });
+    nameInput.addEventListener('input', () => {
+      nameInput.style.borderColor = '';
+      nameInput.style.background = '';
+    });
+  }
+
+  // ── LOL takeover ──────────────────────────────────────────
+  function showLolTakeover() {
+    lolAttempts++;
+    const headline = document.getElementById('lolHeadline');
+    const sub = document.getElementById('lolSub');
+    const apology = document.getElementById('lolApology');
+    if (lolAttempts === 1) {
+      headline.textContent = 'oh hell no 😭';
+      sub.textContent = 'that is, factually, not your name.';
+      apology.textContent = "my bad, i'll behave →";
+    } else {
+      headline.textContent = 'LOL good one 🤡';
+      sub.textContent = 'still not on the list, comedian.';
+      apology.textContent = '…sure jan →';
+    }
+    const overlay = document.getElementById('lolOverlay');
+    overlay.classList.add('is-active');
+    spawnRain(100);
+  }
+
+  function dismissLolTakeover() {
+    const overlay = document.getElementById('lolOverlay');
+    overlay.classList.remove('is-active');
+    const inp = document.getElementById('guestName');
+    if (inp) {
+      inp.value = '';
+      inp.style.borderColor = '';
+      inp.style.background = '';
+      setTimeout(() => inp.focus(), 200);
+    }
+  }
+
+  // ── Falling rain (used by LOL overlay) ────────────────────
+  const RAIN_EMOJIS   = ['😂','🤣','💀','🤡','🙃','😅','🤭','😆','😜','🥲','☠️'];
+  const RAIN_STICKERS = ['LOL','WHO?','NICE TRY','ROFL','LMAO','NOPE','HA.','???','sir.'];
+  const STICKER_TINTS = ['', 'is-mustard', 'is-teal', 'is-maroon', 'is-pink'];
+
+  function spawnRain(n) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const total = reduced ? Math.min(12, n) : n;
+    const w = window.innerWidth;
+    for (let i = 0; i < total; i++) {
+      const el = document.createElement('div');
+      el.className = 'rain-piece';
+      const isSticker = Math.random() < 0.35;
+      if (isSticker) {
+        el.classList.add('rain-sticker');
+        const tint = STICKER_TINTS[Math.floor(Math.random() * STICKER_TINTS.length)];
+        if (tint) el.classList.add(tint);
+        el.textContent = RAIN_STICKERS[Math.floor(Math.random() * RAIN_STICKERS.length)];
+        el.style.transform = `rotate(${(Math.random() * 30 - 15).toFixed(1)}deg)`;
+      } else {
+        el.classList.add('rain-emoji');
+        el.textContent = RAIN_EMOJIS[Math.floor(Math.random() * RAIN_EMOJIS.length)];
+        el.style.fontSize = (32 + Math.random() * 28) + 'px';
+      }
+      el.style.left = (Math.random() * w) + 'px';
+      el.style.top  = (Math.random() * 200 - 220) + 'px';
+      el.style.animationDuration = (Math.random() * 1.8 + 1.6) + 's';
+      el.style.animationDelay    = (Math.random() * 0.6) + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4200);
+    }
+  }
+
+  // Keep the existing celebratory confetti for valid RSVPs.
   function spawnConfetti(n) {
     const colors = ['#f47558','#e0a83a','#c8533a','#94b685','#6a1f30','#f59ea1','#2c8285','#fed992','#f1c252'];
     for (let i = 0; i < n; i++) {
