@@ -963,6 +963,146 @@
     100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
   }
 
+  /* ──────────────────────────────────────────
+     INTERACTIVE REACTIONS — speech bubble, eating wiggle, smoke, popper burst
+     ────────────────────────────────────────── */
+
+  /* Comic-book speech bubble — appears above photo when cake/joint is near */
+  .speech-bubble {
+    position: absolute;
+    top: 14px;
+    left: 50%;
+    z-index: 30;
+    padding: 11px 22px 13px;
+    background: var(--cream);
+    border: 2.5px solid var(--ink);
+    border-radius: 58% 42% 60% 40% / 55% 60% 40% 45%;
+    font-family: 'SeasonMix', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 22px;
+    color: var(--maroon);
+    text-transform: lowercase;
+    white-space: nowrap;
+    letter-spacing: 0.4px;
+    box-shadow: 3px 4px 0 var(--ink);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateX(-50%) scale(0.35) rotate(-14deg);
+    transform-origin: 30% 100%;
+    transition: opacity 0.22s ease, transform 0.4s cubic-bezier(.34,1.56,.64,1);
+  }
+  .speech-bubble.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) scale(1) rotate(-3deg);
+    animation: bubbleWobble 1.4s ease-in-out infinite;
+  }
+  @keyframes bubbleWobble {
+    0%, 100% { transform: translateX(-50%) scale(1)    rotate(-3deg); }
+    50%      { transform: translateX(-50%) scale(1.05) rotate(-1deg); }
+  }
+  /* tail — outline + fill */
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -16px; left: 26%;
+    width: 0; height: 0;
+    border-left: 12px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 20px solid var(--ink);
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -11px; left: 28%;
+    width: 0; height: 0;
+    border-left: 9px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 15px solid var(--cream);
+  }
+
+  /* Photo chomps when cake is near (overrides photoFloat) */
+  .mehak-wrap.is-eating {
+    animation: photoChomp 0.42s ease-in-out infinite !important;
+  }
+  @keyframes photoChomp {
+    0%, 100% { transform: translateX(-50%) rotate(-2deg) scale(1); }
+    25%      { transform: translateX(-50%) rotate(-7deg) scale(1.06); }
+    50%      { transform: translateX(-50%) rotate(2deg)  scale(0.93); }
+    75%      { transform: translateX(-50%) rotate(-3deg) scale(1.04); }
+  }
+
+  /* Photo gentle bob when joint is near */
+  .mehak-wrap.is-puffing {
+    animation: photoPuff 1.05s ease-in-out infinite !important;
+  }
+  @keyframes photoPuff {
+    0%, 100% { transform: translateX(-50%) rotate(-2deg) scale(1); }
+    50%      { transform: translateX(-50%) rotate(-2deg) scale(1.03); }
+  }
+
+  /* Smoke puffs that rise from photo when joint near */
+  .smoke-puff {
+    position: fixed;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 246, 227, 0.92);
+    box-shadow:
+      inset -5px -5px 0 rgba(75, 30, 20, 0.06),
+      0 0 0 1.5px rgba(75, 30, 20, 0.18);
+    pointer-events: none;
+    z-index: 25;
+    opacity: 0;
+    animation: smokeRise 1.7s cubic-bezier(.2,.8,.4,1) forwards;
+  }
+  @keyframes smokeRise {
+    0%   { opacity: 0;    transform: scale(0.45) translate(0, 0); }
+    18%  { opacity: 0.92; }
+    100% { opacity: 0;    transform: scale(2.6) translate(var(--smokeDriftX, 12px), -120px); }
+  }
+
+  /* Popper "pop" when tapped — uses individual scale/rotate so it stacks on inline rotate */
+  .illus.i-popper.is-popping {
+    animation: popperPop 0.5s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes popperPop {
+    0%   { scale: 1;    rotate: 0deg; }
+    30%  { scale: 1.45; rotate: -18deg; }
+    60%  { scale: 0.88; rotate: 8deg; }
+    100% { scale: 1;    rotate: 0deg; }
+  }
+
+  /* Confetti BURST — radiates outward from a point */
+  .confetti-burst {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    will-change: transform, opacity;
+    animation: confettiBurst 1.5s cubic-bezier(.18, .7, .35, 1) forwards;
+  }
+  @keyframes confettiBurst {
+    0% {
+      transform: translate(-50%, -50%) rotate(0);
+      opacity: 1;
+    }
+    70% { opacity: 1; }
+    100% {
+      transform:
+        translate(calc(-50% + var(--tx, 0px)), calc(-50% + var(--ty, 0px) + 280px))
+        rotate(720deg);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mehak-wrap.is-eating,
+    .mehak-wrap.is-puffing,
+    .speech-bubble.is-visible,
+    .illus.i-popper.is-popping {
+      animation: none !important;
+    }
+  }
+
   /* MODAL */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
@@ -1150,6 +1290,8 @@
   .scene-hero .illus.i-cherry[data-anim]           { --reveal-delay: 1.65s; }
   .scene-hero .illus.i-disco[data-anim]            { --reveal-delay: 1.70s; }
   .scene-hero .illus.i-match[data-anim]            { --reveal-delay: 1.75s; }
+  .scene-hero .illus.i-cake[data-anim]             { --reveal-delay: 1.80s; }
+  .scene-hero .illus.i-popper[data-anim]           { --reveal-delay: 1.85s; }
   .scene-hero .confetti-bit[data-anim]             { --reveal-delay: 1.30s; }
   .scene-hero .star-bit[data-anim]                 { --reveal-delay: 1.50s; }
   .scene-hero .squiggle[data-anim]                 { --reveal-delay: 1.55s; }
@@ -1617,6 +1759,68 @@
             </svg>
           </div>
 
+          <!-- bottom-center: birthday cake (drag near photo for nom nom) -->
+          <div class="illus i-cake" style="top: 346px; left: 88px; transform: rotate(-5deg);" data-anim>
+            <svg width="76" height="92" viewBox="0 0 76 92">
+              <!-- flame outer / inner / core -->
+              <path d="M38,2 Q31,10 35,18 Q37,14 38,15 Q39,14 41,18 Q45,10 38,2 Z" fill="#f47558" stroke="#2a1810" stroke-width="1.2" stroke-linejoin="round"/>
+              <path d="M38,7 Q34,12 36,18 Q37,14 38,15 Q39,14 40,18 Q42,12 38,7 Z" fill="#fed992"/>
+              <path d="M38,11 Q36,15 38,18 Q40,15 38,11 Z" fill="#fff8d8"/>
+              <!-- candle -->
+              <rect x="35" y="18" width="6" height="12" fill="#fff6e3" stroke="#2a1810" stroke-width="1.2"/>
+              <line x1="35" y1="22" x2="41" y2="22" stroke="#f47558" stroke-width="1.6"/>
+              <line x1="35" y1="26" x2="41" y2="26" stroke="#f47558" stroke-width="1.6"/>
+              <!-- top tier -->
+              <rect x="22" y="30" width="32" height="14" fill="#f59ea1" stroke="#2a1810" stroke-width="1.4"/>
+              <!-- frosting drip 1 -->
+              <path d="M22,42 L54,42 L54,48 Q50,52 46,48 Q42,52 38,48 Q34,52 30,48 Q26,52 22,48 Z" fill="#fff6e3" stroke="#2a1810" stroke-width="1.2" stroke-linejoin="round"/>
+              <!-- middle tier -->
+              <rect x="14" y="48" width="48" height="16" fill="#94b685" stroke="#2a1810" stroke-width="1.4"/>
+              <circle cx="22" cy="56" r="1.6" fill="#c8533a"/>
+              <circle cx="38" cy="58" r="1.6" fill="#e0a83a"/>
+              <circle cx="54" cy="56" r="1.6" fill="#c8533a"/>
+              <!-- frosting drip 2 -->
+              <path d="M14,62 L62,62 L62,68 Q58,72 54,68 Q50,72 46,68 Q42,72 38,68 Q34,72 30,68 Q26,72 22,68 Q18,72 14,68 Z" fill="#fff6e3" stroke="#2a1810" stroke-width="1.2" stroke-linejoin="round"/>
+              <!-- bottom tier -->
+              <rect x="6" y="68" width="64" height="18" fill="#e0a83a" stroke="#2a1810" stroke-width="1.4"/>
+              <path d="M6,78 Q14,74 22,78 Q30,82 38,78 Q46,74 54,78 Q62,82 70,78" fill="none" stroke="#c8533a" stroke-width="1.4"/>
+              <!-- plate -->
+              <ellipse cx="38" cy="89" rx="34" ry="2.4" fill="#2a1810"/>
+              <ellipse cx="38" cy="88" rx="34" ry="2"   fill="#fed992"/>
+            </svg>
+          </div>
+
+          <!-- middle-right: party popper (tap to burst confetti) -->
+          <div class="illus i-popper" style="top: 100px; right: 18px; transform: rotate(20deg);" data-anim>
+            <svg width="86" height="82" viewBox="0 0 86 82">
+              <!-- streamers -->
+              <path d="M14,18 Q4,10 8,2"  fill="none" stroke="#f47558" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M20,14 Q18,4 26,0" fill="none" stroke="#94b685" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M26,12 Q32,4 42,2" fill="none" stroke="#e0a83a" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M8,28 Q-2,22 0,12" fill="none" stroke="#6a1f30" stroke-width="2.2" stroke-linecap="round"/>
+              <!-- confetti bits flying out -->
+              <circle cx="10" cy="4" r="2.2" fill="#c8533a"/>
+              <rect x="32" y="0" width="3" height="6" fill="#6a1f30" transform="rotate(20 33 3)"/>
+              <circle cx="42" cy="6" r="1.6" fill="#2c8285"/>
+              <rect x="0" y="20" width="6" height="3" fill="#94b685" transform="rotate(-15 3 21)"/>
+              <circle cx="50" cy="2" r="1.4" fill="#f59ea1"/>
+              <!-- cone body: wide opening top-left, narrow toward bottom-right -->
+              <path d="M14,22 L8,32 L66,68 L74,62 Z" fill="#f47558" stroke="#2a1810" stroke-width="1.6" stroke-linejoin="round"/>
+              <!-- diagonal stripes -->
+              <path d="M22,26 L18,34" stroke="#fff6e3" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M34,34 L30,42" stroke="#fff6e3" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M46,42 L42,50" stroke="#fff6e3" stroke-width="2.4" stroke-linecap="round"/>
+              <path d="M58,52 L54,60" stroke="#fff6e3" stroke-width="2.4" stroke-linecap="round"/>
+              <!-- handle bulb at narrow end -->
+              <ellipse cx="72" cy="66" rx="7" ry="5" fill="#6a1f30" stroke="#2a1810" stroke-width="1.4" transform="rotate(35 72 66)"/>
+            </svg>
+          </div>
+
+          <!-- comic-book speech bubble (controlled by JS) -->
+          <div class="speech-bubble" id="speechBubble" aria-hidden="true">
+            <span id="bubbleText">nom nom</span>
+          </div>
+
           <!-- bottom-right: matchstick -->
           <div class="illus i-match" style="bottom: 24px; right: 22px; transform: rotate(25deg);" data-anim>
             <svg width="58" height="70" viewBox="0 0 58 70">
@@ -1900,14 +2104,17 @@
     io.observe(detailsCard);
   }
 
-  /* Draggable, free-floating ornaments */
-  function makeDraggable(el) {
-    let startX = 0, startY = 0, startTop = 0, startLeft = 0, dragging = false;
+  /* Draggable, free-floating ornaments. Optional callbacks let consumers react. */
+  function makeDraggable(el, opts) {
+    opts = opts || {};
+    let startX = 0, startY = 0, startTop = 0, startLeft = 0;
+    let dragging = false, moved = false;
 
     el.addEventListener('pointerdown', (e) => {
       if (e.button !== undefined && e.button !== 0) return;
       e.preventDefault();
       dragging = true;
+      moved = false;
       try { el.setPointerCapture(e.pointerId); } catch (_) {}
       el.classList.add('dragging');
 
@@ -1927,8 +2134,10 @@
       if (!dragging) return;
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
+      if (!moved && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) moved = true;
       el.style.top  = (startTop  + dy) + 'px';
       el.style.left = (startLeft + dx) + 'px';
+      if (opts.onMove) opts.onMove(el);
     });
 
     const stop = (e) => {
@@ -1936,10 +2145,133 @@
       dragging = false;
       el.classList.remove('dragging');
       try { el.releasePointerCapture(e.pointerId); } catch (_) {}
+      if (!moved && opts.onTap) opts.onTap(el, e);
+      if (opts.onEnd) opts.onEnd(el);
     };
     el.addEventListener('pointerup', stop);
     el.addEventListener('pointercancel', stop);
     el.addEventListener('lostpointercapture', stop);
+  }
+
+  /* ── Proximity reactions: cake → "nom nom" + chomp, joint → "puff puff" + smoke ── */
+  const photoEl    = document.querySelector('#mehakWrap');
+  const bubbleEl   = document.getElementById('speechBubble');
+  const bubbleText = document.getElementById('bubbleText');
+
+  const REACTIONS = {
+    'i-cake':  { text: 'nom nom',  cls: 'is-eating' },
+    'i-joint': { text: 'puff puff', cls: 'is-puffing' },
+  };
+  const NEAR_PX = 150;
+  let activeReaction = null;
+  let lastSmokeAt = 0;
+
+  function reactionFor(el) {
+    for (const k in REACTIONS) if (el.classList.contains(k)) return REACTIONS[k];
+    return null;
+  }
+
+  function spawnSmokePuff() {
+    if (!photoEl) return;
+    const r = photoEl.getBoundingClientRect();
+    const puff = document.createElement('div');
+    puff.className = 'smoke-puff';
+    // origin: roughly the mouth area (centered horizontally, ~55% down the face)
+    puff.style.left = (r.left + r.width / 2 - 14 + (Math.random() * 14 - 7)) + 'px';
+    puff.style.top  = (r.top  + r.height * 0.55 - 14) + 'px';
+    puff.style.setProperty('--smokeDriftX', (Math.random() * 36 - 18).toFixed(0) + 'px');
+    document.body.appendChild(puff);
+    setTimeout(() => puff.remove(), 1800);
+  }
+
+  function setReaction(reaction) {
+    if (activeReaction === reaction) return;
+    if (activeReaction) photoEl && photoEl.classList.remove(activeReaction.cls);
+    activeReaction = reaction;
+    if (reaction) {
+      bubbleText.textContent = reaction.text;
+      bubbleEl.classList.add('is-visible');
+      if (photoEl) {
+        // Wipe any stale inline transform from the hover-tilt handler so the
+        // chomp/puff animation isn't competed with by an old transform value.
+        photoEl.style.transform = '';
+        photoEl.style.animationPlayState = '';
+        photoEl.classList.add(reaction.cls);
+      }
+    } else {
+      bubbleEl.classList.remove('is-visible');
+    }
+  }
+
+  function updateReaction(el) {
+    if (!photoEl) return;
+    const reaction = reactionFor(el);
+    if (!reaction) return;
+    const a = el.getBoundingClientRect();
+    const b = photoEl.getBoundingClientRect();
+    const dx = (a.left + a.width / 2)  - (b.left + b.width / 2);
+    const dy = (a.top  + a.height / 2) - (b.top  + b.height / 2);
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < NEAR_PX) {
+      setReaction(reaction);
+      // Continuous smoke for joint
+      if (reaction.cls === 'is-puffing') {
+        const now = performance.now();
+        if (now - lastSmokeAt > 240) {
+          lastSmokeAt = now;
+          spawnSmokePuff();
+        }
+      }
+    } else if (activeReaction === reaction) {
+      setReaction(null);
+    }
+  }
+
+  function clearReactionFor(el) {
+    const reaction = reactionFor(el);
+    if (reaction && activeReaction === reaction) setReaction(null);
+  }
+
+  /* ── Party popper: radial confetti burst from its position ── */
+  const BURST_COLORS = ['#f47558','#e0a83a','#c8533a','#94b685','#6a1f30','#f59ea1','#2c8285','#fed992','#f1c252'];
+  function spawnConfettiBurst(originX, originY, count) {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const total = reduced ? Math.min(16, count) : count;
+    for (let i = 0; i < total; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-burst';
+      piece.style.left = originX + 'px';
+      piece.style.top  = originY + 'px';
+      piece.style.background = BURST_COLORS[Math.floor(Math.random() * BURST_COLORS.length)];
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 60 + Math.random() * 220;
+      const tx = Math.cos(angle) * speed;
+      const ty = Math.sin(angle) * speed - 80; // upward bias
+      piece.style.setProperty('--tx', tx.toFixed(0) + 'px');
+      piece.style.setProperty('--ty', ty.toFixed(0) + 'px');
+
+      const r = Math.random();
+      if (r < 0.33) { piece.style.borderRadius = '50%'; piece.style.width = '10px'; piece.style.height = '10px'; }
+      else if (r < 0.66) { piece.style.width = '4px';  piece.style.height = '14px'; }
+      else { piece.style.width = '8px'; piece.style.height = '8px'; }
+
+      piece.style.animationDuration = (Math.random() * 0.7 + 1.1).toFixed(2) + 's';
+      piece.style.animationDelay    = (Math.random() * 0.08).toFixed(2) + 's';
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 2200);
+    }
+  }
+
+  function popPopper(el) {
+    const r = el.getBoundingClientRect();
+    // Burst from the open end (top-left of the popper SVG)
+    spawnConfettiBurst(r.left + r.width * 0.25, r.top + r.height * 0.30, 60);
+    el.classList.remove('is-popping');
+    void el.offsetWidth; // restart animation if rapid taps
+    el.classList.add('is-popping');
+    setTimeout(() => el.classList.remove('is-popping'), 520);
   }
 
   document.querySelectorAll('.illus, .star-bit').forEach((el) => {
@@ -1948,7 +2280,10 @@
     const delay = (-Math.random() * 6).toFixed(2);
     el.style.setProperty('--floatDur',   dur   + 's');
     el.style.setProperty('--floatDelay', delay + 's');
-    makeDraggable(el);
+
+    const opts = { onMove: updateReaction, onEnd: clearReactionFor };
+    if (el.classList.contains('i-popper')) opts.onTap = popPopper;
+    makeDraggable(el, opts);
   });
 
   /* Photo 3D tilt on hover */
