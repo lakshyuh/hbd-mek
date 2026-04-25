@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mehak's 25th · Sundowner</title>
+<title>Mehak's 25th</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='22' fill='%23f47558'/%3E%3Ccircle cx='28' cy='27' r='6' fill='%23fff3c8'/%3E%3C/svg%3E">
 <style>
   @font-face { font-family: 'SeasonMix'; src: url('fonts/SeasonMix-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
@@ -48,19 +48,19 @@
   }
 
   html { scroll-behavior: smooth; }
-  html, body { background: #f4e6c8; }
+  html, body { background: #fbf2dd; }
 
   body {
     font-family: 'SeasonSans', sans-serif;
     color: var(--ink);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Cleaner, brighter ambient backdrop */
+    /* Brighter, fresher ambient backdrop */
     background:
-      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255, 220, 178, 0.7), transparent 70%),
-      radial-gradient(ellipse 50% 35% at 100% 100%, rgba(244, 117, 88, 0.18), transparent 70%),
-      radial-gradient(ellipse 50% 35% at 0% 100%, rgba(224, 168, 58, 0.18), transparent 70%),
-      linear-gradient(180deg, #fff1d5 0%, #fadcae 50%, #f4c693 100%);
+      radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255, 245, 222, 0.9), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 100% 100%, rgba(255, 192, 145, 0.12), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 0% 100%, rgba(248, 220, 140, 0.16), transparent 70%),
+      linear-gradient(180deg, #fffaee 0%, #fce8c8 55%, #f8d7af 100%);
     background-attachment: fixed;
     overflow-x: hidden;
   }
@@ -73,7 +73,7 @@
       url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.18'/%3E%3C/svg%3E");
     mix-blend-mode: overlay;
     pointer-events: none; z-index: 1;
-    opacity: 0.35;
+    opacity: 0.22;
   }
 
   /* ──────────────────────────────────────────
@@ -98,25 +98,25 @@
     position: relative;
     border-radius: 26px;
     overflow: hidden;
-    /* Brighter, cleaner sundowner */
+    /* Brighter, cleaner sundowner — less coral, more honey */
     background:
-      radial-gradient(ellipse 460px 280px at 50% 38%, rgba(255, 232, 196, 0.95), transparent 65%),
-      radial-gradient(ellipse 360px 240px at 18% 100%, rgba(244, 117, 88, 0.18), transparent 70%),
-      radial-gradient(ellipse 360px 240px at 88% 0%, rgba(241, 194, 82, 0.26), transparent 70%),
-      linear-gradient(178deg, #ffe9c8 0%, #ffd2a4 28%, #fbb280 55%, #f59572 78%, #ed7c5b 100%);
+      radial-gradient(ellipse 460px 280px at 50% 38%, rgba(255, 246, 222, 0.97), transparent 65%),
+      radial-gradient(ellipse 360px 240px at 18% 100%, rgba(255, 178, 132, 0.13), transparent 70%),
+      radial-gradient(ellipse 360px 240px at 88% 0%, rgba(248, 220, 140, 0.22), transparent 70%),
+      linear-gradient(178deg, #fff5dc 0%, #ffe2b8 28%, #fec999 55%, #fdb389 78%, #f6a07c 100%);
     box-shadow: var(--shadow-card);
     will-change: transform;
   }
 
-  /* Soft halftone — much lighter than before */
+  /* Soft halftone — whisper-quiet for a cleaner, more modern card */
   .invite::before {
     content: '';
     position: absolute; inset: 0;
-    background-image: radial-gradient(circle, rgba(75, 30, 20, 0.06) 0.5px, transparent 1px);
+    background-image: radial-gradient(circle, rgba(75, 30, 20, 0.05) 0.5px, transparent 1px);
     background-size: 5px 5px;
     mix-blend-mode: multiply;
     pointer-events: none; z-index: 60;
-    opacity: 0.55;
+    opacity: 0.38;
   }
   /* Inner edge highlight — gives the card a pressed, dimensional edge */
   .invite::after {
@@ -443,40 +443,40 @@
     width: 100%; height: 100%;
     object-fit: cover;
     object-position: 50% 30%;
-    /* BRIGHTER + CLEANER — no more sepia/grayscale */
+    /* Bright + clean — modern photo, no sepia film */
     filter:
-      brightness(1.12)
-      contrast(1.04)
-      saturate(1.12);
+      brightness(1.22)
+      contrast(1.02)
+      saturate(1.02);
     transition: filter 0.6s ease, transform 0.6s ease;
   }
   .mehak-wrap:hover .mehak-frame img {
     filter:
-      brightness(1.16)
-      contrast(1.05)
-      saturate(1.18);
+      brightness(1.26)
+      contrast(1.03)
+      saturate(1.06);
     transform: scale(1.03);
   }
-  /* Slight warm wash to keep it within the palette without dirtying */
+  /* Whisper of warmth — keeps it in the palette without muddying */
   .mehak-frame::before {
     content: '';
     position: absolute; inset: 0;
-    background: linear-gradient(165deg, rgba(255, 230, 178, 0.10) 0%, rgba(244, 117, 88, 0.08) 50%, rgba(107, 31, 46, 0.10) 100%);
+    background: linear-gradient(165deg, rgba(255, 244, 215, 0.05) 0%, rgba(244, 117, 88, 0.03) 50%, rgba(107, 31, 46, 0.04) 100%);
     mix-blend-mode: multiply;
     pointer-events: none;
     z-index: 2;
     transition: opacity 0.5s ease;
   }
-  .mehak-wrap:hover .mehak-frame::before { opacity: 0.5; }
-  /* Subtle natural halftone on photo */
+  .mehak-wrap:hover .mehak-frame::before { opacity: 0.4; }
+  /* Subtle natural halftone on photo — toned down for a cleaner, modern look */
   .mehak-frame::after {
     content: '';
     position: absolute; inset: 0;
-    background-image: radial-gradient(circle, rgba(75, 30, 20, 0.32) 0.65px, transparent 1.1px);
-    background-size: 4.4px 4.4px;
+    background-image: radial-gradient(circle, rgba(75, 30, 20, 0.28) 0.6px, transparent 1.1px);
+    background-size: 4.6px 4.6px;
     mix-blend-mode: multiply;
     pointer-events: none;
-    opacity: 0.28;
+    opacity: 0.14;
     z-index: 3;
   }
 
@@ -1642,8 +1642,8 @@
 
         <!-- HEADER -->
         <div class="header">
-          <div class="eyebrow-banner" data-anim>private invitation</div>
-          <div class="invite-to"      data-anim>please join us in celebrating</div>
+          <div class="eyebrow-banner" data-anim>Private invitation</div>
+          <div class="invite-to"      data-anim>Please join us in celebrating</div>
           <div class="name-wrap"      data-anim>
             <h1 class="name-h1">
               Mehak
@@ -1654,7 +1654,7 @@
           </div>
           <div class="age-line" data-anim>
             <span class="line"></span>
-            turning <em>twenty five</em>
+            Turning <em>twenty five</em>
             <span class="line"></span>
           </div>
         </div>
@@ -1876,7 +1876,7 @@
 
       <!-- scroll hint -->
       <div class="scroll-hint" id="scrollHint">
-        <span class="label">scroll for the plan</span>
+        <span class="label">Scroll for the plan</span>
         <span class="arrow"></span>
       </div>
   </section>
@@ -1887,7 +1887,7 @@
 
         <div class="details-header" data-anim>
           <span class="line"></span>
-          <span class="label">the plan</span>
+          <span class="label">The plan</span>
           <span class="line"></span>
         </div>
 
@@ -1961,23 +1961,23 @@
 
         <a href="https://maps.app.goo.gl/ew4XfdxSKysGfMJd9" target="_blank" rel="noopener" class="location-card" id="locationLink" data-anim>
           <div>
-            <div class="l-label">the spot</div>
-            <div class="l-val">tap for location →</div>
+            <div class="l-label">The spot</div>
+            <div class="l-val">Tap for location →</div>
           </div>
           <span class="arrow">↗</span>
         </a>
 
         <div class="house-rules" data-anim>
-          be on time<span class="dot">·</span>be ready to get drunk
+          Be on time<span class="dot">·</span>Be ready to get drunk
         </div>
 
         <div class="rsvp-zone" data-anim>
-          <div class="rsvp-note">don't leave a girl waiting…</div>
-          <button class="rsvp-btn" id="rsvpBtn" onclick="openRSVP()"><span class="spark">✷</span>rsvp<span class="spark">✷</span></button>
+          <div class="rsvp-note">Don't leave a girl waiting…</div>
+          <button class="rsvp-btn" id="rsvpBtn" onclick="openRSVP()"><span class="spark">✷</span>RSVP<span class="spark">✷</span></button>
         </div>
 
         <div class="sign-off" data-anim>
-          with love &amp; cosmopolitans <span class="heart">♥</span> M.
+          With love &amp; cosmopolitans <span class="heart">♥</span> M.
         </div>
       </div>
   </section>
@@ -1998,10 +1998,10 @@
     <div id="formContent">
       <!-- Step 1: name -->
       <div class="step" id="stepName">
-        <h2>name on the door?</h2>
-        <p class="sub">first things first — who's gracing us?</p>
-        <input type="text" id="guestName" placeholder="first name, you legend" autocomplete="off" />
-        <button class="modal-submit" onclick="submitName()">lock me in →</button>
+        <h2>Name on the door?</h2>
+        <p class="sub">First things first — who's gracing us?</p>
+        <input type="text" id="guestName" placeholder="First name, you legend" autocomplete="off" />
+        <button class="modal-submit" onclick="submitName()">Lock me in →</button>
       </div>
 
       <!-- Step 2: drink -->
@@ -2011,8 +2011,8 @@
           <span class="pill-name" id="pillName"></span>
           <span class="back">· change</span>
         </button>
-        <h2 id="drinkHeadline">pick your poison.</h2>
-        <p class="sub">cocktail of choice, on the house.</p>
+        <h2 id="drinkHeadline">Pick your poison.</h2>
+        <p class="sub">Cocktail of choice, on the house.</p>
         <div class="drink-grid" id="drinkGrid">
           <button type="button" class="drink-tile" data-drink="Espresso martini" style="animation-delay: 60ms">
             <svg viewBox="0 0 36 40">
@@ -2024,7 +2024,7 @@
               <rect x="17.2" y="22" width="1.6" height="11" fill="#2a1810"/>
               <ellipse cx="18" cy="34" rx="8" ry="1.6" fill="#2a1810"/>
             </svg>
-            espresso martini
+            Espresso martini
           </button>
           <button type="button" class="drink-tile" data-drink="Cosmopolitan" style="animation-delay: 120ms">
             <svg viewBox="0 0 36 40">
@@ -2033,7 +2033,7 @@
               <rect x="17.2" y="24" width="1.6" height="9" fill="#2a1810"/>
               <ellipse cx="18" cy="34" rx="8" ry="1.6" fill="#2a1810"/>
             </svg>
-            cosmopolitan
+            Cosmopolitan
           </button>
           <button type="button" class="drink-tile" data-drink="Tequila soda, lime" style="animation-delay: 180ms">
             <svg viewBox="0 0 36 40">
@@ -2043,7 +2043,7 @@
               <path d="M19 13 L25 13 M22 10 L22 16" stroke="#2a1810" stroke-width="0.8"/>
               <ellipse cx="18" cy="32" rx="9" ry="1.6" fill="#2a1810"/>
             </svg>
-            tequila soda
+            Tequila soda
           </button>
           <button type="button" class="drink-tile" data-drink="Something bubbly" style="animation-delay: 240ms">
             <svg viewBox="0 0 36 40">
@@ -2054,7 +2054,7 @@
               <rect x="17.2" y="28" width="1.6" height="6" fill="#2a1810"/>
               <ellipse cx="18" cy="35" rx="6" ry="1.5" fill="#2a1810"/>
             </svg>
-            something bubbly
+            Something bubbly
           </button>
           <button type="button" class="drink-tile" data-drink="Whatever's pink" style="animation-delay: 300ms">
             <svg viewBox="0 0 36 40">
@@ -2062,15 +2062,15 @@
               <path d="M14 13 Q18 16 22 13" fill="none" stroke="#fff6e3" stroke-width="1.2" stroke-linecap="round" opacity="0.85"/>
               <ellipse cx="18" cy="34" rx="9" ry="1.6" fill="#2a1810"/>
             </svg>
-            whatever's pink
+            Whatever's pink
           </button>
         </div>
       </div>
 
       <!-- Step 3: thanks -->
       <div class="step thanks-msg" id="thanksMsg">
-        <div class="big">see you<br>Saturday!</div>
-        <p>ice in the bucket, your name on the list. ✷</p>
+        <div class="big">See you<br>Saturday!</div>
+        <p>Ice in the bucket, your name on the list. ✷</p>
       </div>
     </div>
   </div>
@@ -2079,10 +2079,10 @@
 <!-- LOL takeover -->
 <div class="lol-overlay" id="lolOverlay" onclick="if(event.target===this)dismissLolTakeover()">
   <div class="lol-card">
-    <h2 id="lolHeadline">oh hell no 😭</h2>
-    <p class="lol-sub" id="lolSub">that is, factually, not your name.</p>
-    <p class="lol-tertiary" id="lolTertiary">the list is… curated. try again, or close the tab in shame.</p>
-    <button class="modal-submit" id="lolApology" onclick="dismissLolTakeover()">my bad, i'll behave →</button>
+    <h2 id="lolHeadline">Oh hell no 😭</h2>
+    <p class="lol-sub" id="lolSub">That is, factually, not your name.</p>
+    <p class="lol-tertiary" id="lolTertiary">The list is… curated. Try again, or close the tab in shame.</p>
+    <button class="modal-submit" id="lolApology" onclick="dismissLolTakeover()">My bad, I'll behave →</button>
   </div>
 </div>
 
@@ -2425,7 +2425,7 @@
     inp.style.background = '';
     chosenName = formatName(raw);
     document.getElementById('pillName').textContent = chosenName;
-    document.getElementById('drinkHeadline').textContent = `hi ${chosenName.toLowerCase()}. pick your poison.`;
+    document.getElementById('drinkHeadline').textContent = `Hi ${chosenName}. Pick your poison.`;
     // Reset drink tile state in case of back-and-forth.
     document.querySelectorAll('.drink-tile').forEach((t, i) => {
       t.classList.remove('is-chosen', 'is-fading');
@@ -2474,13 +2474,13 @@
     const sub = document.getElementById('lolSub');
     const apology = document.getElementById('lolApology');
     if (lolAttempts === 1) {
-      headline.textContent = 'oh hell no 😭';
-      sub.textContent = 'that is, factually, not your name.';
-      apology.textContent = "my bad, i'll behave →";
+      headline.textContent = 'Oh hell no 😭';
+      sub.textContent = 'That is, factually, not your name.';
+      apology.textContent = "My bad, I'll behave →";
     } else {
       headline.textContent = 'LOL good one 🤡';
-      sub.textContent = 'still not on the list, comedian.';
-      apology.textContent = '…sure jan →';
+      sub.textContent = 'Still not on the list, comedian.';
+      apology.textContent = '…Sure Jan →';
     }
     const overlay = document.getElementById('lolOverlay');
     overlay.classList.add('is-active');
@@ -2501,7 +2501,7 @@
 
   // ── Falling rain (used by LOL overlay) ────────────────────
   const RAIN_EMOJIS   = ['😂','🤣','💀','🤡','🙃','😅','🤭','😆','😜','🥲','☠️'];
-  const RAIN_STICKERS = ['LOL','WHO?','NICE TRY','ROFL','LMAO','NOPE','HA.','???','sir.'];
+  const RAIN_STICKERS = ['LOL','WHO?','NICE TRY','ROFL','LMAO','NOPE','HA.','???','SIR.'];
   const STICKER_TINTS = ['', 'is-mustard', 'is-teal', 'is-maroon', 'is-pink'];
 
   function spawnRain(n) {
